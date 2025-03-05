@@ -1,16 +1,19 @@
-const char* ssid = "SSID";
-const char* password = "PASSWORD";
+const char* ssid = "SSID"; //SSID wifi
+const char* password = "PASSWORD"; //password wifi
 
+//blynk attributes
 #define BLYNK_PRINT Serial
 #define BLYNK_TEMPLATE_ID "TAMPLATE_ID"
 #define BLYNK_TEMPLATE_NAME "Monitoring Jamur Overheat"
 #define BLYNK_AUTH_TOKEN "TOKEN"
 
+//define component pin
 #define DHTPin 23
 #define FanPin 21
 #define MistPin 19
 #define LedPin 2
 
+//include library
 #include <Bonezegei_DHT11.h>
 #include <WiFi.h>
 #include <BlynkSimpleEsp32.h>
@@ -20,7 +23,7 @@ Bonezegei_DHT11 dht(DHTPin);
 void setup() {
   delay(1000);
   Serial.begin(115200);
-  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, password);
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, password); //blynk auth
   pinMode(FanPin, OUTPUT);
   pinMode(MistPin, OUTPUT);
   pinMode(LedPin, OUTPUT);
@@ -32,7 +35,7 @@ void setup() {
 
 void loop() {
   delay(3000);
-  Blynk.run();
+  Blynk.run(); //running blynk
   if(dht.getData()){
     float tempCel = dht.getTemperature();
     int hum = dht.getHumidity();
@@ -44,6 +47,7 @@ void loop() {
     Serial.print(hum);
     Serial.println("%");
 
+    //sending data
     Blynk.virtualWrite(V2, tempCel);
     Blynk.virtualWrite(V3, hum);
 
